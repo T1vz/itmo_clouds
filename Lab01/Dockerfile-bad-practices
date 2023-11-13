@@ -1,0 +1,22 @@
+FROM golang:latest
+
+# tells Docker that the container listens on specified network ports at runtime
+
+EXPOSE 3000
+
+# using root as a working directory inside the image
+
+WORKDIR /
+
+# copy all files to image
+
+COPY server .
+
+# download Go modules and dependencies and compile application
+
+RUN go mod download \
+    && go build -o godocker
+
+# command to be used to execute when the image is used to start a container
+
+CMD [ "/godocker" ]
