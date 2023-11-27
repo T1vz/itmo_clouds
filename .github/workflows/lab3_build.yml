@@ -15,8 +15,8 @@ jobs:
       NAME: ${{ secrets.DOCKER_NAME }}
       TOKEN: ${{ secrets.DOCKER_TOKEN }}
     steps:
-    - name: ENV $LOGIN
-      run: echo $TOKE
+    - name: ENV Check
+      run: echo $LOGIN
     - name: Login to docker.io
       run:  echo $TOKEN | docker login -u $USERNAME --password-stdin
     - uses: actions/checkout@main
