@@ -1,0 +1,23 @@
+name: Build and Publish
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    env:
+      LOGIN: ${{ secrets.DOCKER_LOGIN }}
+      NAME: ${{ secrets.DOCKER_NAME }}
+    steps:
+    - name: Login to docker.io
+      run:  echo ${{ secrets.DOCKER_PWD }} | docker login -u ${{ secrets.DOCKER_LOGIN }} --password-stdin
+    - uses: actions/checkout@master
+    - name: Build image
+      run: docker build -t $LOGIN/$NAME:${GITHUB_REF:11} -f Dockerfile-good-practices ./Lab01/server
+    - name: Push image to docker.io
+      run: docker push $LOGIN/$NAME:${GITHUB_REF:11}
