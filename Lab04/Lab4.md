@@ -1,4 +1,4 @@
-# Лабораторная работа №2 "Работа с Kubernetes"
+# Лабораторная работа №4 "Работа с Prometheus и Grafana"
 
 ## Выполнили:
 
@@ -30,6 +30,7 @@
 Из репозитория установим Prometheus и создадим NodePort сервис Kubernetes для Prometheus
 
 > helm install prometheus prometheus-community/prometheus
+
 > kubectl expose service prometheus-server --type=NodePort --target-port=9090 --name=prometheus-server-np
 
 Для проверки команд можем просмотреть все поды, связанные с Prometheus
@@ -52,7 +53,9 @@ P.S. При установке нам сообщили, где работает 
 Как и в случае с Prometheus, добавим репозиторий, установим Grafana, запустим как сервис Kubernetes
 
 > helm repo add grafana https://grafana.github.io/helm-charts
+
 > helm install grafana grafana/grafana
+
 > kubectl expose service grafana --type=NodePort --target-port=3000 --name=grafana-np
 
 При установке нам выпала заметка, что для входа стоит использовать логин _admin_ и пароль, который можно получить, выполнив команду
