@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       LOGIN: ${{ secrets.DOCKER_LOGIN }}
+      PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       NAME: ${{ secrets.DOCKER_NAME }}
       TOKEN: ${{ secrets.DOCKER_TOKEN }}
     steps:
@@ -22,7 +23,7 @@ jobs:
         uses: docker/login-action@v3
         with:
           username: $LOGIN
-          password: $TOKEN
+          password: $PASSWORD
 
       - name: Build and Push image to docker.io
         uses: docker/build-push-action@v2
