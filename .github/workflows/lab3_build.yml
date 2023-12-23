@@ -26,4 +26,4 @@ jobs:
           context: Lab01/server
           file: Dockerfile-good-practices
           push: true
-          tags: ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }}:${GITHUB_REF:11}
+          tags: ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }}:latest
