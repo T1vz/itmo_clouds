@@ -3,22 +3,26 @@ name: Build and Publish
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    paths:
+      - "Lab03/**"
 
 jobs:
 
   build:
     runs-on: ubuntu-latest
-    env:
-      LOGIN: ${{ secrets.DOCKER_LOGIN }}
-      NAME: ${{ secrets.DOCKER_NAME }}
-      TOKEN: ${{ secrets.DOCKER_TOKEN }}
     steps:
-    - name: Login to docker.io
-      run:  echo $TOKEN | docker login -u $USERNAME --password-stdin
-    - uses: actions/checkout@main
-    - name: Build image
-      run: docker build -t $LOGIN/$NAME:${GITHUB_REF:11} -f Dockerfile-good-practices ./Lab01/server
-    - name: Push image to docker.io
-      run: docker push $LOGIN/$NAME:${GITHUB_REF:11}
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_LOGIN }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Build and Push image to docker.io
+        uses: docker/build-push-action@v2
+        with:
+          context: Lab03
+          push: true
+          tags: ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }}:latest
