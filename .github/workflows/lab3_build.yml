@@ -23,7 +23,6 @@ jobs:
       - name: Build and Push image to docker.io
         uses: docker/build-push-action@v2
         with:
-          context: Lab01/server
-          file: Dockerfile-good-practices
+          context: Lab03
           push: true
           tags: ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }}:latest
