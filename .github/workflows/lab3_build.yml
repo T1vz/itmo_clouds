@@ -2,9 +2,9 @@ name: Build and Publish
 
 on:
   push:
-    branches: [ "lab03" ]
-  pull_request:
-    branches: [ "lab03" ]
+    branches: [ "main" ]
+    paths:
+      - "Lab03/**"
 
 jobs:
 
