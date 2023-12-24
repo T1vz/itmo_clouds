@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:13.3
+    environment:
+      POSTGRES_DB: "test"
+      POSTGRES_USER: "t1vz"
+      POSTGRES_PASSWORD: "1290347856"
+    volumes:
+      - ./storage:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  app:
+    container_name: script
+    build:
+      context: .
+      dockerfile: Dockerfile-star
+    environment:
+      POSTGRES_DB: "test"
+      POSTGRES_USER: "t1vz"
+      POSTGRES_PASSWORD: "1290347856"
+      POSTGRES_HOST: "postgres"
+      POSTGRES_PORT: "5432"
+      APP_VALUE: 'test'
+    depends_on:
+      - postgres

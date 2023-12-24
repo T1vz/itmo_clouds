@@ -1,0 +1,46 @@
+##
+
+## STEP 1 - BUILD
+
+##
+
+# specify the base image to be used for the application
+
+FROM golang:1.21-alpine AS build
+
+# create a working directory inside the image
+
+WORKDIR /app
+
+# copy Go modules and dependencies to image
+
+COPY star_server/go.mod star_server/go.sum ./
+
+# download Go modules and dependencies
+
+RUN go mod download
+RUN go mod tidy
+
+# copy directory files
+
+COPY server .
+
+# compile application
+
+RUN go build -o /godocker
+
+##
+
+## STEP 2 - DEPLOY
+
+##
+
+FROM scratch
+
+WORKDIR /
+
+COPY --from=build /godocker /godocker
+
+EXPOSE 3000/tcp
+
+ENTRYPOINT ["/godocker"]
