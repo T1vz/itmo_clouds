@@ -40,7 +40,7 @@ s
 
 ![img4](./img/lab3_runners.jpg)
 
-4. Затем в локальном репозитории были проведены попытки запуска настроенных sekf runners с помощью средств Github Actions.
+4. Затем в локальном репозитории были проведены попытки запуска настроенных self runners с помощью средств Github Actions.
 
 * Первый запуск образа
 
@@ -49,7 +49,7 @@ s
 Среди причин неудач можно выделить следующие:
 
 * Установка локальных переменных для VAULT
-* Отсутствие докера на селфран машине (было пофикшено)
+* Отсутствие докера на self run машине
 
 5. После ряда неудач и фикса ошибок удалось достичь успешного запуска образа Docker.
 
@@ -65,12 +65,48 @@ s
 ![img7](./img/lab3_acc_token.jpg)
 
 
-7.  Ниже представлены секреты в Github по итогу работы.
+7.  Ниже представлен код файла [lab3_star_build.yml](https://github.com/T1vz/itmo_clouds/blob/main/.github/workflows/lab3_star_build.yml) для работы с секретами Hashicorp Vault.
 
-* Github Secrets
+```
+name: Build and Publish
 
-![img7](./img/lab3_secrets.jpg)
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "Lab03/**"
+      - ".github/workflows/**"
 
+jobs:
+
+  build:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Import Secrets
+        uses: hashicorp/vault-action@v2
+        with:
+          url: http://127.0.0.1:8200
+          tlsSkipVerify: true
+          token: ${{ secrets.VAULT_TOKEN }}
+          secrets: |
+            secret/data/docker * | DOCKER_
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ env.DOCKER_LOGIN }}
+          password: ${{ env.DOCKER_TOKEN }}
+
+      - name: Build and Push image to docker.io
+        uses: docker/build-push-action@v2
+        with:
+          context: Lab03
+          push: true
+          tags: ${{ env.DOCKER_LOGIN }}/${{ env.DOCKER_NAME }}:latest
+```
 
 ## Вывод:
 В результате выполнения лабораторной работы были изучены основы работы с CI/CD на Github, были настроены self runners для автоматического запуска образов Docker, была проведена установка и работа со средствами Hashicorp Vault.
