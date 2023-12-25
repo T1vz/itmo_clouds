@@ -65,18 +65,27 @@ s
 ![img7](./img/lab3_acc_token.jpg)
 
 
-7.  Ниже представлен код файла [lab3_star_build.yml](https://github.com/T1vz/itmo_clouds/blob/main/.github/workflows/lab3_star_build.yml) для работы с секретами Hashicorp Vault.
+7.  Ниже представлен код файла [lab3_star_build.yml](https://github.com/T1vz/itmo_clouds/blob/main/.github/workflows/lab3_star_build.yml) для автоматической сборки и публикации образа Docker.
+
+* Имя процесса
 
 ```
 name: Build and Publish
+```
 
+* Ветка и директории, в которой нужно отслеживать изменения
+```
 on:
   push:
     branches: [ "main" ]
     paths:
       - "Lab03/**"
       - ".github/workflows/**"
+```
 
+* Шаги запускаемого процесса
+
+```
 jobs:
 
   build:
