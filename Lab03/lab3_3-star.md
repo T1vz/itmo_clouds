@@ -22,7 +22,7 @@
 
 2. Список успешно настроенных self runners представлен на рисунке ниже.
 
-* Руководство по настройке self runners
+* Список self runners
 
 ![img4](./img/lab3_runners.jpg)
 
