@@ -1,0 +1,39 @@
+name: Build and Publish
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "Lab03/**"
+      - ".github/workflows/**"
+
+jobs:
+
+  build:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Import Secrets
+        uses: hashicorp/vault-action@v2
+        with:
+          url: http://127.0.0.1:8200
+          tlsSkipVerify: true
+          token: ${{ secrets.VAULT_TOKEN }}
+          secrets: |
+            secret/data/docker DOCKER_USERNAME ;
+            secret/data/docker DOCKER_TOKEN
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ env.DOCKER_LOGIN }}
+          password: ${{ env.DOCKER_TOKEN }}
+
+      - name: Build and Push image to docker.io
+        uses: docker/build-push-action@v2
+        with:
+          context: Lab03
+          push: true
+          tags: ${{ env.DOCKER_LOGIN }}/${{ env.DOCKER_NAME }}:latest
