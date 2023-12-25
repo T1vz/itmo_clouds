@@ -16,7 +16,7 @@
 
 1.  Сначала по руководству от Github были настроены self runners для автоматического запуска образов Docker.
 
-* Список self runners
+* Руководство по настройке self runners
 
 ![img3](./img/lab3_self_runner.jpg)
 
