@@ -192,7 +192,7 @@ prometheus.rules: |-
     - name: Unreachable replica alert
       rules:
       - alert: Unreachable Development Replica
-        expr: sum(kube_deployment_status_replicas_unavailable) == 0
+        expr: sum(kube_deployment_status_replicas_unavailable) > 0
         for: 1m
         labels:
           severity: slack
