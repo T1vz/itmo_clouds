@@ -91,13 +91,18 @@ P.S. При установке нам сообщили, где работает 
 
 ## Цель работы:
 
-Настроить алерты Grafana в виде кода при помощи Terraform
+Настроить алерты Grafana в виде кода 
 
 ## Задачи:
 
-- Установить Terraform
-- Подключить Terraform к Grafana
-- Подготовить стек Grafana Alerting к работе
+Первая попытка:
+    - Установить Terraform
+    - Подключить Terraform к Grafana
+    - Подготовить стек Grafana Alerting к работе
+Вторая попытка
+    - Настройка Alertmanager
+    - Определение правил оповещений
+    - Настройка отправки уведомлений в Telegram
 
 ## Ход работы
 
@@ -169,6 +174,87 @@ resource "grafana_contact_point" "telegram_contact_point" {
 Дальнейшая часть работы идет туго, потому что ресурсов для изучения немного
 <br>![](./img/14.png)<br/>
 
+### Настройка Alertmanager
+
+Склонируем репозиторий, необходимый для конфигурирования  AlertManager.
+
+```
+git clone https://github.com/bibinwilson/kubernetes-alert-manager.git
+
+```
+### Определение правил оповещений
+
+Правила оповещения на основе показателей должны присутствовать в конфигурации Prometheus, поэтому добавим в файл `config-map.yaml` Alert Rule, согласно которому каждый раз когда реплика будет недоступна, нам будет приходить уведомление. 
+
+```
+prometheus.rules: |-
+    groups:
+    - name: Unreachable replica alert
+      rules:
+      - alert: Unreachable Development Replica
+        expr: sum(kube_deployment_status_replicas_unavailable) == 0
+        for: 1m
+        labels:
+          severity: slack
+        annotations:
+          summary: У нас всё упало
+
+```
+
+### Настройка отправки уведомлений в Telegram
+
+В файл `AlertManagerConfigmap.yaml` добавим настройки нашего ранее созданного Telegram-бота и чата.
+
+```
+config.yml: |-
+    global:
+    templates:
+    - '/etc/alertmanager/*.tmpl'
+    route:
+      receiver: telegram
+      group_by: ['alertname', 'priority']
+      group_wait: 10s
+      repeat_interval: 30m
+      routes:
+        - receiver: telegram
+          match:
+            severity: 'critical'
+          group_wait: 10s
+          repeat_interval: 1m
+
+    receivers:
+    - name: telegram
+      telegram_configs:
+      - api_url: https://api.telegram.org
+        bot_token: 6975812664:AAF2cdpF0C5dStHLUfMG6krCkpn_06lQz_A
+        chat_id: -4062375569
+        disable_notifications: false
+        http_config:
+          follow_redirects: true
+        send_resolved: true
+        parse_mode: 'HTML'
+
+```
+Файлы AlertTemplateConfigMap.yaml, Deployment.yaml и Service.yaml оставим без изменений.
+
+Добавим все необходимые файлы.
+
+<br>![](./img/15.jpg)<br/>
+
+Проверим работу подов, после чего с помощью проброса портов откроем Prometheus.
+
+<br>![](./img/16.png)<br/>
+
+Можем заметить, что наш Alert появился и находится в статусе Firing.
+
+<br>![](./img/17.png)<br/>
+
+Кроме того, пришло уведомление в наш чат в Telegram. Ура!
+
+<br>![](./img/18.jpg)<br/>
+
+
 ## Вывод:
 
-В результате выполнения лабораторной работы были изучены ресурсы Prometheus и Grafana, получены дашборды для мониторинга, предприняты попытки работы с Terraform для настройки алертов Grafana кодом
+В результате выполнения лабораторной работы были изучены ресурсы AlertManager, созданы правила оповещений на основе показателей, полученных из Prometheus, настроены уведомления в Telegram, а также предприняты попытки работы с Terraform для настройки алертов Grafana кодом.
+
