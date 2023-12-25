@@ -100,7 +100,9 @@ P.S. При установке нам сообщили, где работает 
 - Установить Terraform
 - Подключить Terraform к Grafana
 - Подготовить стек Grafana Alerting к работе
+  
 Вторая попытка
+
 - Настроить Alertmanager
 - Определить правила оповещений
 - Настроить отправку уведомлений в Telegram
@@ -240,7 +242,7 @@ config.yml: |-
         parse_mode: 'HTML'
 
 ```
-Файлы AlertTemplateConfigMap.yaml, Deployment.yaml и Service.yaml оставим без изменений.
+Файлы `AlertTemplateConfigMap.yaml`, `Deployment.yaml` и `Service.yaml` оставим без изменений.
 
 Добавим все необходимые файлы.
 
