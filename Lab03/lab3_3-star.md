@@ -83,13 +83,17 @@ on:
       - ".github/workflows/**"
 ```
 
-* Шаги запускаемого процесса
+* Добавление задачи, исполняемой при запуске файла на локальном хосте
 
 ```
 jobs:
 
   build:
     runs-on: self-hosted
+```
+* Шаги запускаемого процесса. Об их назначении можно сделать вывод по названиям: Checkout – переход к репозиторию, Import Secrets – Загрузка секретов с использованием Hashicorp Vault, Log in to Docker Hub – авторизация в Dockerhub с использованием имени пользователя и пароля, Build and Push image to docker.io – сборка и отправка образа на docker.io.
+
+```
     steps:
       - name: Checkout
         uses: actions/checkout@v3
