@@ -1,0 +1,33 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: alertmanager-config
+  namespace: monitoring
+data:
+  config.yml: |-
+    global:
+    templates:
+    - '/etc/alertmanager/*.tmpl'
+    route:
+      receiver: telegram
+      group_by: ['alertname', 'priority']
+      group_wait: 10s
+      repeat_interval: 30m
+      routes:
+        - receiver: telegram
+          match:
+            severity: 'critical'
+          group_wait: 10s
+          repeat_interval: 1m
+
+    receivers:
+    - name: telegram
+      telegram_configs:
+      - api_url: https://api.telegram.org
+        bot_token: 6975812664:AAF2cdpF0C5dStHLUfMG6krCkpn_06lQz_A
+        chat_id: -4062375569
+        disable_notifications: false
+        http_config:
+          follow_redirects: true
+        send_resolved: true
+        parse_mode: 'HTML'
