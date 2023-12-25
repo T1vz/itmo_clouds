@@ -1,4 +1,4 @@
-# Лабораторная работа №3 (3*) "Настройка CI/CD"
+# Лабораторная работа №3 "Настройка CI/CD"
 
 ## Выполнили: 
 Бевз Тимофей K34201, Загайнова Кристина K34201, Блохина Анастасия K34201, Балашов Матвей K34201
@@ -8,12 +8,88 @@
 
 ## Задачи:
 * Настройка CI/CD для автоматизации работы с образами Docker
-* Проверка работы настроек
-* Работа с секретами Hashicorp Vault
+* Проверка корректности настроек на практике
 
 ## Ход работы
 
 ### Настройка CI/CD на Github
+
+1.  Сначала по руководству от Github были настроены self runners для автоматического запуска образов Docker.
+
+* Список self runners
+
+![img3](./img/lab3_self_runner.jpg)
+
+2. Список успешно настроенных self runners представлен на рисунке ниже.
+
+* Руководство по настройке self runners
+
+![img4](./img/lab3_runners.jpg)
+
+3. Затем в локальном репозитории были проведены попытки запуска настроенных self runners с помощью средств Github Actions.
+
+* Первый запуск образа
+
+![img5](./img/lab3_gh_act.jpg)
+
+Среди причин неудач можно выделить следующие:
+
+* Отсутствие Docker на self run машине
+* Установка локальных переменных для VAULT (относится ко второй части работы)
+
+4.  Ниже представлен код файла [lab3_build.yml](https://github.com/T1vz/itmo_clouds/blob/main/.github/workflows/lab3_star_build.yml) для автоматической сборки и публикации образа Docker без секретов.
+
+```
+name: Build and Publish
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "Lab03/**"
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_LOGIN }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Build and Push image to docker.io
+        uses: docker/build-push-action@v2
+        with:
+          context: Lab03
+          push: true
+          tags: ${{ secrets.DOCKER_LOGIN }}/${{ secrets.DOCKER_NAME }}:latest
+```
+
+Более подробный разбор кода файла представлен во второй части работы.
+
+5. Ниже продемонстрирован успешный запуск образа.
+
+* Успешный запуск образа
+
+![img6](./img/lab3_success.jpg)
+
+# "Секреты Hashicorp Vault"
+
+## Цель работы:
+Работа с секретами посредством Hashicorp Vault.
+
+## Задачи:
+* Настройка CI/CD для автоматизации работы с образами Docker
+* Проверка корректности настроек на практике
+
+## Ход работы
+
+### Hashicorp Vault
 
 1.  Сначала в локальном репозитории был запущен Hashicorp Vault. 
 
@@ -27,30 +103,7 @@
 
 ![img2](./img/lab3_vault_check.jpg)
 
-2.  Затем по руководству от Github были настроены self runners для автоматического запуска образов Docker.
-
-* Список self runners
-
-![img3](./img/lab3_self_runner.jpg)
-
-3. Список успешно настроенных self runners представлен на рисунке ниже.
-
-* Руководство по настройке self runners
-
-![img4](./img/lab3_runners.jpg)
-
-4. Затем в локальном репозитории были проведены попытки запуска настроенных self runners с помощью средств Github Actions.
-
-* Первый запуск образа
-
-![img5](./img/lab3_gh_act.jpg)
-
-Среди причин неудач можно выделить следующие:
-
-* Установка локальных переменных для VAULT
-* Отсутствие докера на self run машине
-
-5.  Ниже представлен код файла [lab3_star_build.yml](https://github.com/T1vz/itmo_clouds/blob/main/.github/workflows/lab3_star_build.yml) для автоматической сборки и публикации образа Docker, который стал результатом ряда ошибок и их исправления.
+2. Ниже представлен разбор файла [lab3_star_build.yml](https://github.com/T1vz/itmo_clouds/blob/main/.github/workflows/lab3_star_build.yml) для автоматической сборки и отправки образа Docker с использованием секретов.
 
 * Имя процесса
 
@@ -106,27 +159,18 @@ jobs:
           tags: ${{ env.DOCKER_LOGIN }}/${{ env.DOCKER_NAME }}:latest
 ```
 
-6. Ниже продемонстрирован успешный запуск образа.
-
-* Успешный запуск образа
-
-![img6](./img/lab3_success.jpg)
-
-
-7.  Ниже представлен Access Token для Dockerhub по итогу работы.
+3.  Ниже представлен Access Token для Dockerhub по итогу работы.
 
 * Access Token
 
 ![img7](./img/lab3_acc_token.jpg)
 
-8.  Ниже представлены секреты на Github по итогу работы.
+4.  Ниже представлены секреты на Github по итогу работы. Для работы self runner во второй части работы был добавлен vault_token.
 
 * Секреты
 
 ![img7](./img/lab3_secrets.jpg)
 
-
-
-## Вывод:
+## Выводы:
 В результате выполнения лабораторной работы были изучены основы работы с CI/CD на Github, были настроены self runners для автоматического запуска образов Docker, была проведена установка и работа со средствами Hashicorp Vault.
 Планируемые результаты были достигнуты.
