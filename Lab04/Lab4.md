@@ -187,7 +187,6 @@ resource "grafana_contact_point" "telegram_contact_point" {
 
 ```
 git clone https://github.com/bibinwilson/kubernetes-alert-manager.git
-
 ```
 ### Определение правил оповещений
 
@@ -245,19 +244,15 @@ config.yml: |-
 Файлы `AlertTemplateConfigMap.yaml`, `Deployment.yaml` и `Service.yaml` оставим без изменений.
 
 Добавим все необходимые файлы.
-
 <br>![](./img/15.jpg)<br/>
 
 Проверим работу подов, после чего с помощью проброса портов откроем Prometheus.
-
 <br>![](./img/16.png)<br/>
 
 Можем заметить, что наш Alert появился и находится в статусе Firing (алерт в состоянии срабатывания, у нас что-то упало!).
-
 <br>![](./img/17.png)<br/>
 
 Кроме того, пришло уведомление в наш чат в Telegram. Ура!
-
 <br>![](./img/18.jpg)<br/>
 
 
