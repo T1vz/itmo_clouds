@@ -78,9 +78,13 @@ jobs:
 
 ![img6](./img/lab3_success.jpg)
 
-* Результат работы self runner на Github
+* Результат работы self runner на Github. Успех был достигнут с 18 попытки.
 
-![img7](./img/lab3_build.jpg)
+![img7](./img/lab3_build1.jpg)
+
+* Шаги, выполненные при успешной сборке
+
+![img8](./img/lab3_build_steps.jpg)  
 
 # "Секреты Hashicorp Vault"
 
@@ -173,6 +177,10 @@ jobs:
 * Секреты
 
 ![img7](./img/lab3_secrets.jpg)
+
+5. Ниже представлен успешный результат работы self runner на Github для второй части работы.
+
+![img7](./img/lab3_build.jpg)
 
 ## Выводы:
 В результате выполнения лабораторной работы были изучены основы работы с CI/CD на Github, были настроены self runners для автоматического запуска образов Docker, была проведена установка и работа со средствами Hashicorp Vault.
