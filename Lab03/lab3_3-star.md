@@ -78,6 +78,10 @@ jobs:
 
 ![img6](./img/lab3_success.jpg)
 
+* Результат работы self runner на Github
+
+![img7](./img/lab3_build.jpg)
+
 # "Секреты Hashicorp Vault"
 
 ## Цель работы:
