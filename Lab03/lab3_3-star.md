@@ -14,30 +14,7 @@
 
 ### Настройка CI/CD на Github
 
-1.  Сначала по руководству от Github были настроены self runners для автоматического запуска образов Docker.
-
-* Руководство по настройке self runners
-
-![img3](./img/lab3_self_runner.jpg)
-
-2. Список успешно настроенных self runners представлен на рисунке ниже.
-
-* Список self runners
-
-![img4](./img/lab3_runners.jpg)
-
-3. Затем в локальном репозитории были проведены попытки запуска настроенных self runners с помощью средств Github Actions.
-
-* Первый запуск образа
-
-![img5](./img/lab3_gh_act.jpg)
-
-Среди причин неудач можно выделить следующие:
-
-* Отсутствие Docker на self run машине
-* Установка локальных переменных для VAULT (относится ко второй части работы)
-
-4.  Ниже представлен код файла [lab3_build.yml](https://github.com/T1vz/itmo_clouds/blob/main/.github/workflows/lab3_star_build.yml) для автоматической сборки и публикации образа Docker без секретов.
+1.  Ниже представлен код файла [lab3_build.yml](https://github.com/T1vz/itmo_clouds/blob/main/.github/workflows/lab3_star_build.yml) для автоматической сборки и публикации образа Docker без секретов.
 
 ```
 name: Build and Publish
@@ -72,13 +49,8 @@ jobs:
 
 Более подробный разбор кода файла представлен во второй части работы.
 
-5. Ниже продемонстрирован успешный запуск образа.
 
-* Успешный запуск образа
-
-![img6](./img/lab3_success.jpg)
-
-* Результат работы self runner на Github. Успех был достигнут с 18 попытки.
+2.  Результат сборки на Github. Успех был достигнут с 18 попытки.
 
 ![img7](./img/lab3_build1.jpg)
 
@@ -98,7 +70,19 @@ jobs:
 
 ### Hashicorp Vault
 
-1.  Сначала в локальном репозитории был запущен Hashicorp Vault. 
+1.  Сначала по руководству от Github были настроены self runners для автоматического запуска образов Docker.
+
+* Руководство по настройке self runners
+
+![img3](./img/lab3_self_runner.jpg)
+
+2. Список успешно настроенных self runners представлен на рисунке ниже.
+
+* Список self runners
+
+![img4](./img/lab3_runners.jpg)
+
+3.  Затем в локальном репозитории был запущен Hashicorp Vault. 
 
 * Запуск Hashicorp Vault
 
@@ -110,7 +94,18 @@ jobs:
 
 ![img2](./img/lab3_vault_check.jpg)
 
-2. Ниже представлен разбор файла [lab3_star_build.yml](https://github.com/T1vz/itmo_clouds/blob/main/.github/workflows/lab3_star_build.yml) для автоматической сборки и отправки образа Docker с использованием секретов.
+4. Затем в локальном репозитории были проведены попытки запуска настроенных self runners с помощью средств Github Actions.
+
+* Запуск self runners
+
+![img5](./img/lab3_gh_act.jpg)
+
+Среди причин неудач можно выделить следующие:
+
+* Отсутствие Docker на self run машине
+* Установка локальных переменных для VAULT (относится ко второй части работы)
+
+5. Ниже представлен разбор файла [lab3_star_build.yml](https://github.com/T1vz/itmo_clouds/blob/main/.github/workflows/lab3_star_build.yml) для автоматической сборки и отправки образа Docker с использованием секретов.
 
 * Имя процесса
 
@@ -166,19 +161,25 @@ jobs:
           tags: ${{ env.DOCKER_LOGIN }}/${{ env.DOCKER_NAME }}:latest
 ```
 
-3.  Ниже представлен Access Token для Dockerhub по итогу работы.
+6. Ниже продемонстрирован успешный запуск образа.
+
+* Успешный запуск образа
+
+![img6](./img/lab3_success.jpg)
+
+7.  Ниже представлен Access Token для Dockerhub по итогу работы.
 
 * Access Token
 
 ![img7](./img/lab3_acc_token.jpg)
 
-4.  Ниже представлены секреты на Github по итогу работы. Для работы self runner во второй части работы был добавлен vault_token.
+8.  Ниже представлены секреты на Github по итогу работы. Для работы self runner во второй части работы был добавлен vault_token.
 
 * Секреты
 
 ![img7](./img/lab3_secrets.jpg)
 
-5. Ниже представлен успешный результат работы self runner на Github для второй части работы.
+9. Ниже представлен успешный результат работы self runner на Github для второй части работы.
 
 * Результат запуска self runner
 
